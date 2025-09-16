@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using SuperShop.Data.Entities;
 using SuperShop.Models;
-using System.Threading.Tasks;
+
 
 namespace SuperShop.Helpers
 {
@@ -22,6 +23,11 @@ namespace SuperShop.Helpers
             return await _userManager.CreateAsync(user, password);
         }
 
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -39,6 +45,11 @@ namespace SuperShop.Helpers
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
         }
     }
 }
