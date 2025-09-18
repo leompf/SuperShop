@@ -83,6 +83,14 @@ namespace SuperShop.Controllers
                     };
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
+                    //TO-DO - Adicionar roles a novos users que se registem
+                    await _userHelper.AddUserToRoleAsync(user, "Customer");
+
+                    var role = await _userHelper.IsUserInRoleAsync(user, "Customer");
+                    if (!role)
+                    {
+                        await _userHelper.AddUserToRoleAsync(user, "Customer");
+                    }
 
                     if (result != IdentityResult.Success)
                     {
