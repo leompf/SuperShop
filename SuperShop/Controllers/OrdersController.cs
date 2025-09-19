@@ -25,11 +25,13 @@ namespace SuperShop.Controllers
             return View(model);
         }
 
+
         public async Task<IActionResult> Create()
         {
             var model = await _orderRepository.GetDetailTempsAsync(this.User.Identity.Name);
             return View(model);
         }
+
 
         public IActionResult AddProduct()
         {
@@ -41,6 +43,7 @@ namespace SuperShop.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(AddItemViewModel model)
@@ -66,6 +69,7 @@ namespace SuperShop.Controllers
             return RedirectToAction("Create");
         }
 
+
         public async Task<IActionResult> Increase(int? id)
         {
             if (id == null)
@@ -77,6 +81,7 @@ namespace SuperShop.Controllers
             return RedirectToAction("Create");
         }
 
+
         public async Task<IActionResult> Decrease(int? id)
         {
             if (id == null)
@@ -85,6 +90,19 @@ namespace SuperShop.Controllers
             }
 
             await _orderRepository.ModifyOrderDetailTempQuantityAsync(id.Value, -1);
+            return RedirectToAction("Create");
+        }
+
+
+        public async Task<IActionResult> ConfirmOrder()
+        {
+            var response = await _orderRepository.ConfirmOrderAsync(this.User.Identity.Name);
+
+            if (response)
+            {
+                return RedirectToAction("Index");
+            }
+
             return RedirectToAction("Create");
         }
     }
